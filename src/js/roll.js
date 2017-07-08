@@ -29,6 +29,14 @@ export const roll = function (ast) {
       sum = sum + rolls[i];
     }
     return sum;
+  } else if (ast[0] === '*') {
+    return roll(ast[1]) * roll(ast[2]);
+  } else if (ast[0] === '/') {
+    return roll(ast[1] / roll(ast[2]));
+  } else if (ast[0] === '+') {
+    return roll(ast[1]) + roll(ast[2]);
+  } else if (ast[0] === '-') {
+    return roll(ast[1] - roll(ast[2]));
   }
   throw new Error('unrecognized node type: ' + ast[0]);
 };
