@@ -1,6 +1,8 @@
 import { parser } from './parser.js';
 import { roll } from './roll.js';
 
+const DEBUG = true;
+
 (function () {
   const render_form = function (url) {
     let dice = url.searchParams.get('dice');
@@ -31,16 +33,31 @@ import { roll } from './roll.js';
     let dice = url.searchParams.get('dice');
 
     if (dice) {
-      let ast = parser.parse(dice);
-
-      /*
-      let debug = document.createElement('p');
-      debug.textContent = JSON.stringify(ast);
-      document.body.appendChild(debug);
-      */
-
       let result = document.createElement('p');
-      result.textContent = '' + roll(ast);
+      let ast = null;
+
+      try {
+        ast = parser.parse(dice);
+      } catch (e) {
+        if (DEBUG) {
+          result.textContent = 'could not parse: ' + dice + ': ' + e;
+        } else {
+          result.textContent = 'invalid dice notation: ' + dice;
+        }
+      }
+
+      if (ast) {
+        try {
+          result.textContent = roll(ast);
+        } catch (e) {
+          if (DEBUG) {
+            result.textContent = 'could not evaluate: ' + e;
+          } else {
+            result.textContent = 'error';
+          }
+        }
+      }
+
       document.body.appendChild(result);
     }
 

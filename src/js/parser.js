@@ -13,6 +13,12 @@ single_die_expr = "d" num_faces:digits {
   return ['die', ['literal', 1], num_faces];
 }
 
+geometric_expr_op = "III" / "II" / "IV" / "I" / "V"
+
+geometric_expr = "d" op:geometric_expr_op {
+  return [op];
+}
+
 multiple_die_expr = num_dice:digits "d" num_faces:digits {
   return ['die', num_dice, num_faces];
 }
@@ -38,7 +44,7 @@ keep_drop_expr = num_dice:digits "d" num_faces:digits op:keep_drop_op num_keep_d
   throw new Error('unrecognized keep/drop operator: ' + op);
 }
 
-int_expr = keep_drop_expr /  multiple_die_expr / single_die_expr / digits
+int_expr = keep_drop_expr /  multiple_die_expr / single_die_expr / geometric_expr / digits
 
 prod_expr = left:int_expr _? op:[*/] _? right:prod_expr {
   return [op, left, right];
@@ -51,7 +57,6 @@ sum_expr = left:prod_expr _? op:[+-] _? right:sum_expr {
 top_expr = _? expr:sum_expr _? {
   return expr;
 }
-
 `;
 
 export const parser = peg.generate(grammar);
