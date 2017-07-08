@@ -12,7 +12,7 @@ const DEBUG = true;
     form.setAttribute('action', url.origin + url.pathname);
 
     let label = document.createElement('label');
-    label.textContent = 'Dice Notation (e.g. 3d6):';
+    label.textContent = 'Dice Notation (e.g. 3d6): ';
     form.appendChild(label);
 
     let input_dice = document.createElement('input');
@@ -22,10 +22,6 @@ const DEBUG = true;
     input_dice.setAttribute('value', dice || '');
     form.appendChild(input_dice);
 
-    let submit = document.createElement('input');
-    submit.setAttribute('type', 'submit');
-    submit.setAttribute('value', 'Roll');
-    form.appendChild(submit);
     document.body.appendChild(form);
   };
 
