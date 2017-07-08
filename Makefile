@@ -1,10 +1,10 @@
 .PHONY: build
-build: clean_static node_modules static/js/dice_notation.bundle.js
+build: clean_dest node_modules dest/js/dice_notation.bundle.js
 
 node_modules:
 	npm install
 
-static/js/dice_notation.bundle.js:
+dest/js/dice_notation.bundle.js:
 	./node_modules/.bin/webpack
 
 .PHONY: eslint
@@ -14,10 +14,10 @@ eslint:
 .PHONY: check
 check: eslint
 
-.PHONY: clean_static
-clean_static:
-	rm -rf static
+.PHONY: clean_dest
+clean_dest:
+	rm -rf dest
 
 .PHONY: clean
-clean: clean_static
+clean: clean_dest
 	rm -rf node_modules

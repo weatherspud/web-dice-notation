@@ -5,7 +5,7 @@ const config = {
         dice_notation: './src/js/dice_notation.js'
     },
     output: {
-        path: path.resolve(__dirname, 'static/js/'),
+        path: path.resolve(__dirname, 'dest/js/'),
         filename: '[name].bundle.js'
     }
 };
