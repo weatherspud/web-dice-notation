@@ -1,7 +1,9 @@
 import peg from 'pegjs';
 
 const grammar = `
-start = sum_expr
+start = top_expr
+
+_ = [ \\n\\t\\r\\f]+
 
 digits = digits:[0-9]+ {
   return ['literal', parseInt(digits.join(''))];
@@ -38,13 +40,18 @@ keep_drop_expr = num_dice:digits "d" num_faces:digits op:keep_drop_op num_keep_d
 
 int_expr = keep_drop_expr /  multiple_die_expr / single_die_expr / digits
 
-prod_expr = left:int_expr op:[*/] right:prod_expr {
+prod_expr = left:int_expr _? op:[*/] _? right:prod_expr {
   return [op, left, right];
 } / int_expr
 
-sum_expr = left:prod_expr op:[+-] right:sum_expr {
+sum_expr = left:prod_expr _? op:[+-] _? right:sum_expr {
   return [op, left, right];
 } / prod_expr
+
+top_expr = _? expr:sum_expr _? {
+  return expr;
+}
+
 `;
 
 export const parser = peg.generate(grammar);
